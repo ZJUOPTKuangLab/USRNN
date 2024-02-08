@@ -185,14 +185,7 @@ optimizer_g = tf.keras.optimizers.Adam(learning_rate=start_lr, beta_1=0.9, beta_
 # --------------------------------------------------------------------------------
 #                           loss function
 # --------------------------------------------------------------------------------
-def total_variation_loss(x):
-    a=K.square(
-        x[:patch_height*scale_factor-1,:patch_width*scale_factor-1]-
-        x[1:,:patch_width*scale_factor-1])
-    b=K.square(
-        x[:patch_height*scale_factor-1,:patch_width*scale_factor-1]-
-        x[:patch_height*scale_factor-1,1:])
-    return K.mean(K.pow(a+b,1.25))
+
 def hessian(x):
     xx=K.mean(K.abs(x[:,:patch_height*scale_factor-2,:patch_width*scale_factor-1,:]+x[:,2:,:patch_width*scale_factor-1,:]-2*x[:,1:patch_height*scale_factor-1,:patch_width*scale_factor-1,:]))
     yy=K.mean(K.abs(x[:,:patch_height*scale_factor-1,:patch_width*scale_factor-2,:]+x[:,:patch_width*scale_factor-1,2:,:]-2*x[:,:patch_width*scale_factor-1,1:patch_height*scale_factor-1,:]))
@@ -206,10 +199,10 @@ def loss_psf(y_true,y_pred):
     out = tf.math.divide(tf.math.subtract(out, tf.reduce_min(out)),
                           tf.math.subtract(tf.reduce_max(out), tf.reduce_min(out)))
     true = y_true
-    TV=total_variation_loss(y_pred[0,:,:,0])
+    
     H=hessian(y_pred)
-    ssim_loss =(1 - K.mean(tf.image.ssim(out, true, 1)))
-    loss=K.mean(K.square((out-true)))*loss1+ssim_loss*loss2+TV*conti_weight+H*conti_weight2
+    
+    loss=K.mean(K.square((out-true)))*loss1+H*conti_weight2
     # pred = y_pred
     # loss=K.mean(K.square((pred-true)))
     return loss
@@ -220,10 +213,10 @@ def loss_psf2(y_true,y_pred):
     out = tf.math.divide(tf.math.subtract(out, tf.reduce_min(out)),
                           tf.math.subtract(tf.reduce_max(out), tf.reduce_min(out)))
     true = y_true
-    TV=total_variation_loss(y_pred[0,:,:,0])
+    
     H = hessian(y_pred)
-    ssim_loss =(1 - K.mean(tf.image.ssim(out, true, 1)))
-    loss=K.mean(K.square((out-true)))*loss1+ssim_loss*loss2+TV*conti_weight+H*conti_weight2
+    
+    loss=K.mean(K.square((out-true)))*loss1+H*conti_weight2
     # pred = y_pred
     # loss=K.mean(K.square((pred-true)))
     return loss
@@ -234,10 +227,10 @@ def loss_psf3(y_true,y_pred):
     out = tf.math.divide(tf.math.subtract(out, tf.reduce_min(out)),
                           tf.math.subtract(tf.reduce_max(out), tf.reduce_min(out)))
     true = y_true
-    TV=total_variation_loss(y_pred[0,:,:,0])
+    
     H = hessian(y_pred)
-    ssim_loss =(1 - K.mean(tf.image.ssim(out, true, 1)))
-    loss=K.mean(K.square((out-true)))*loss1+ssim_loss*loss2+TV*conti_weight+H*conti_weight2
+    
+    loss=K.mean(K.square((out-true)))*loss1+H*conti_weight2
 
     return loss
 def loss_psf4(y_true,y_pred):
@@ -247,10 +240,10 @@ def loss_psf4(y_true,y_pred):
     out = tf.math.divide(tf.math.subtract(out, tf.reduce_min(out)),
                           tf.math.subtract(tf.reduce_max(out), tf.reduce_min(out)))
     true = y_true
-    TV=total_variation_loss(y_pred[0,:,:,0])
+    
     H = hessian(y_pred)
-    ssim_loss =(1 - K.mean(tf.image.ssim(out, true, 1)))
-    loss=K.mean(K.square((out-true)))*loss1+ssim_loss*loss2+TV*conti_weight+H*conti_weight2
+   
+    loss=K.mean(K.square((out-true)))*loss1+H*conti_weight2
 
     return loss
 def loss_psf5(y_true,y_pred):
@@ -260,10 +253,10 @@ def loss_psf5(y_true,y_pred):
     out = tf.math.divide(tf.math.subtract(out, tf.reduce_min(out)),
                           tf.math.subtract(tf.reduce_max(out), tf.reduce_min(out)))
     true = y_true
-    TV=total_variation_loss(y_pred[0,:,:,0])
+    
     H = hessian(y_pred)
-    ssim_loss =(1 - K.mean(tf.image.ssim(out, true, 1)))
-    loss=K.mean(K.square((out-true)))*loss1+ssim_loss*loss2+TV*conti_weight+H*conti_weight2
+    
+    loss=K.mean(K.square((out-true)))*loss1+H*conti_weight2
 
     return loss
 
@@ -274,10 +267,10 @@ def loss_psf_wf(y_true,y_pred):
     out = tf.math.divide(tf.math.subtract(out, tf.reduce_min(out)),
                           tf.math.subtract(tf.reduce_max(out), tf.reduce_min(out)))
     true = y_true
-    TV=total_variation_loss(y_pred[0,:,:,0])
+    
     H = hessian(y_pred)
-    ssim_loss =(1 - K.mean(tf.image.ssim(out, true, 1)))
-    loss=K.mean(K.square((out-true)))*loss1+ssim_loss*loss2+TV*conti_weight+H*conti_weight2
+    
+    loss=K.mean(K.square((out-true)))*loss1+H*conti_weight2
 
     return loss
 # --------------------------------------------------------------------------------
