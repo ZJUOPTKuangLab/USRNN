@@ -82,14 +82,14 @@ if not os.path.exists(sample_path):
     os.mkdir(sample_path)
 
 loss1=1
-loss2=0
+
 if scale_factor==2:
     psf = cv2.imread('psf_10.tif',0)
-    conti_weight = 0.00
+    
     conti_weight2 = 0.001
 else:
     psf = cv2.imread('psf.tif', 0)
-    conti_weight = 0.00
+    
     conti_weight2 = 0.00
 #psf=psf[15:35,15:35]
 # psf=cv.resize(psf,(17*2,17*2),interpolation=cv.INTER_CUBIC)
